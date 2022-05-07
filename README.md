@@ -4,9 +4,9 @@
   alt="gogs elixir interface demo application!">
 
 A fully functional **demo** app
-showing interaction <br />
-between an **`Elixir`** (**`Phoenix`**) web App
-and **`Gogs`** (`Git`) server
+showing interaction between an<br />
+**`Elixir`** (**`Phoenix`**) App
+and **`Gogs`** server
 using the
 [`gogs`](https://github.com/dwyl/gogs) package. <br />
 **_Step-by-step_ tutorial** showing you how to do it yourself!
@@ -68,10 +68,11 @@ _Before_ you start,
 make sure you have the following installed:
 
 1. `Elixir`: https://elixir-lang.org/install.html <br />
-   New to `Elixir`? see: https://github.com/dwyl/learn-elixir
+   New to `Elixir`? see: 
+   [github.com/dwyl/**learn-elixir**](https://github.com/dwyl/learn-elixir)
 2. `Phoenix`: https://hexdocs.pm/phoenix/installation.html <br />
    New to `Phoenix`? see:
-   https://github.com/dwyl/learn-phoenix-framework
+   [github.com/dwyl/**learn-phoenix-framework**](https://github.com/dwyl/learn-phoenix-framework)
 
 <br />
 
@@ -163,10 +164,12 @@ you will need 4 environment variables:
 [**`.env_sample`**](https://github.com/dwyl/gogs/blob/main/.env_sample)
 
 1. `GOGS_URL` - the domain where your Gogs Server is deployed,
-   without the protocol, e.g: `gogs-server.fly.dev`
+   without the protocol, <br />
+   e.g: `gogs-server.fly.dev`
 
 2. `GOGS_ACCESS_TOKEN` - the REST API Access Token 
-See: https://github.com/dwyl/gogs-server#connect-via-rest-api-https
+See: 
+[gogs-server#connect-via-rest-api-https](https://github.com/dwyl/gogs-server#connect-via-rest-api-https)
 
 3. `GOGS_SSH_PRIVATE_KEY_PATH` - absolute path to the `id_rsa` file
   on your `localhost` or `Phoenix` server instance.
@@ -176,23 +179,111 @@ See: https://github.com/dwyl/gogs-server#connect-via-rest-api-https
 
 > If you're new to Environment Variables
 > Please see: 
-> [github.com/dwyl/learn-environment-variables](https://github.com/dwyl/learn-environment-variables)
+> [github.com/dwyl/**learn-environment-variables**](https://github.com/dwyl/learn-environment-variables)
 
 #### Context: `Gogs` Server on Fly.io
 
 In _our_ case our **`Gogs`** Server instance
 is deployed to [fly.io](https://fly.io/)
 at:
-[gogs-server.fly.dev](https://gogs-server.fly.dev/)
-
+[gogs-server.fly.dev](https://gogs-server.fly.dev/) <br />
 To understand how this was deployed, 
 please see: 
-[github.com/dwyl/gogs-server](https://github.com/dwyl/gogs-server)
+[github.com/dwyl/**gogs-server**](https://github.com/dwyl/gogs-server)
+
+<br />
+
+### 4. Create Function to Interact with Gogs Repo
+
+As noted in the first step above, 
+the homepage of our app 
+is the default `Phoenix` homepage.
+
+In this section we're going to change that!
+
+Open the `lib/app_web/controllers/page_controller.ex` file.
+You should see the following:
+
+```elixir
+defmodule AppWeb.PageController do
+  use AppWeb, :controller
+
+  def index(conn, _params) do
+    render(conn, "index.html")
+  end
+end
+```
+
+
+
+Inside the file, create a new function:
+
+```elixir
+
+```
+
+Detour: https://github.com/dwyl/gogs/issues/21
+
+
+<br />
+
+# _Bonus Level_: _Optional_ UI/UX! 💃 
+
+
+
+#### ⚠️ Warning: the next 2 steps will _temporarily_ "break" the Phoenix app. Be patient and keep going!
+
+
+## 4. Create 2 New Files ➕
+
+Create two new directories`lib/app_web/live`
+
+e.g:
+
+```sh
+mkdir lib/app_web/live
+mkdir 
+```
+
+
+
+Create 2 new file with the following paths:
+1. 
+
+### Note on **`Phoenix`** **`LiveView`**
+
+In this demo we will be using **`Phoenix`** **`LiveView`**
+because we feel that the programming model 
+is simpler than "MVC" 
+from a dev perspective. 
+
+If you are new to **`LiveView`**,
+please see our complete beginners' tutorial:
+[github.com/dwyl/**phoenix-liveview-counter-tutorial**](https://github.com/dwyl/phoenix-liveview-counter-tutorial)
+
+
+
+### The Repo!
+
+https://gogs-server.fly.dev/demo-org/gogs-demo
 
 
 
 
-### X. _Deploy_ to Fly.io
+### 
+
+This Rich Text Editor is based off our work in:
+[github.com/nelsonic/amemo](https://github.com/nelsonic/amemo/tree/3a3872663698d93abe29a75add462a7f4285ac26)
+
+
+## Checkpoint: Working on `localhost` 🏁 
+
+
+## X. _Deploy_ to Fly.io 🚀 
 
 > Need to document how to deploy the Phoenix App to Fly.io
 > Will return to this tomorrow. `#EnoughScreens` for today.
+
+### Create new Org on Fly.io (Optional)
+
+https://fly.io/organizations
