@@ -4,9 +4,9 @@
   alt="gogs elixir interface demo application!">
 
 A fully functional **demo** app
-showing interaction
-between an **`Elixir`** (**`Phoenix`**) web App
-and **`Gogs`** (`Git`) server
+showing interaction <br />
+between an **`Elixir`** (**`Phoenix`**) web App <br />
+and **`Gogs`** (`Git`) server <br />
 using the
 [`gogs`](https://github.com/dwyl/gogs) package.
 **_Step-by-step_ tutorial** showing you how to do it yourself!
@@ -129,6 +129,13 @@ So far so good. 👌 <br />
 
 ### 2. Add `gogs` to `deps`
 
-Open the
+Open the 
+[`mix.exs`]()
+file,
+locate the `defp deps do` section and add the following line:
 
-### _Deploy_ to Fly.io
+```elixir
+
+```
+
+### X. _Deploy_ to Fly.io
