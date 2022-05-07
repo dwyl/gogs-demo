@@ -52,6 +52,9 @@ defmodule App.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
 
+      # The star of the show! github.com/dwyl/gogs
+      {:gogs, "~> 0.6.0"},
+
       # Check test coverage: github.com/parroty/excoveralls
       {:excoveralls, "~> 0.14.4", only: :test}
     ]
