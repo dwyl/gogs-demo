@@ -9,6 +9,7 @@ between an **`Elixir`** (**`Phoenix`**) web App
 and **`Gogs`** (`Git`) server
 using the
 [`gogs`](https://github.com/dwyl/gogs) package.
+**_Step-by-step_ tutorial** showing you how to do it yourself!
 
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/gogs/Elixir%20CI?label=build&style=flat-square)](https://github.com/dwyl/gogs/actions/workflows/ci.yml)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/gogs/master.svg?style=flat-square)](http://codecov.io/github/dwyl/gogs?branch=main)
@@ -16,11 +17,7 @@ using the
 [![Libraries.io dependency status](https://img.shields.io/librariesio/release/hex/gogs?logoColor=brightgreen&style=flat-square)](https://libraries.io/hex/gogs)
 [![docs](https://img.shields.io/badge/docs-maintained-brightgreen?style=flat-square)](https://hexdocs.pm/gogs/api-reference.html)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/gogs/issues)
-[![HitCount](http://hits.dwyl.com/dwyl/gogs.svg)](http://hits.dwyl.com/dwyl/gogs)
-
-<!-- uncomment when service is working ...
-[![Inline docs](http://inch-ci.org/github/dwyl/auth.svg?branch=master&style=flat-square)](http://inch-ci.org/github/dwyl/auth)
--->
+[![HitCount](http://hits.dwyl.com/dwyl/gogs-demo.svg)](http://hits.dwyl.com/dwyl/gogs-demo)
 
 </div>
 
@@ -53,10 +50,7 @@ https://github.com/dwyl/gogs-demo/issues
 
 # _How?_ 💻
 
-There are a few steps,
-make sure you have everything before you start.
-
-### Prerequisites
+### 0. Prerequisites
 
 _Before_ you start,
 make sure you have the following installed:
@@ -69,7 +63,7 @@ make sure you have the following installed:
 
 <br />
 
-### Create a New `Phoenix` App
+### 1. Create a New `Phoenix` App
 
 For this example,
 we are creating a _basic_ **`Phoenix`** App
@@ -82,7 +76,7 @@ in order to showcase the `gogs` package.
 mix phx.new app --no-ecto --no-dashboard --no-mailer
 ```
 
-When prompted to install dependencies
+When prompted to install dependencies:
 
 ```sh
 Fetch and install dependencies? [Yn]
@@ -97,3 +91,44 @@ You should see something like this:
 * running cd assets && npm install && node node_modules/webpack/bin/webpack.js
 * running mix deps.compile
 ```
+
+#### Checkpoint: Working `Phoenix` App
+
+Change into the directory of your newly created `Phoenix` app
+
+```sh
+cd app
+```
+
+And start the app:
+
+```sh
+mix setup
+mix phx.server
+```
+
+You should see output similar to the following:
+
+```sh
+Generated app app
+[info] Running AppWeb.Endpoint with cowboy 2.9.0 at 127.0.0.1:4000 (http)
+[info] Access AppWeb.Endpoint at http://localhost:4000
+[debug] Downloading esbuild from https://registry.npmjs.org/esbuild-darwin-64/-/esbuild-darwin-64-0.14.29.tgz
+[watch] build finished, watching for changes...
+```
+
+That confirms the app is working.
+
+Open your web browser to the URL: http://localhost:4000
+
+You should see the default **`Phoenix`** home page:
+
+<img width="828" alt="image" src="https://user-images.githubusercontent.com/194400/165493125-0e714185-e268-411f-bb7d-99f7cd0eb8ba.png">
+
+So far so good. 👌 <br />
+
+### 2. Add `gogs` to `deps`
+
+Open the
+
+### _Deploy_ to Fly.io
