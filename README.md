@@ -23,10 +23,11 @@ using the
 
 # _Why_? 🤷
 
-As software engineers we are **_always learning_ new things**. <br />
+As software engineers we are 
+[**_always learning_ `new` things**](https://twitter.com/nelsonic/status/913811339709173760). <br />
 When we learn,
 we love having _detailed docs and **examples**_
-that explain _exactly_ how to get up-and-running.
+that explain _exactly_ how to get up-and-running. <br />
 **`@dwyl`** we _write_ examples because we want them _ourselves_.
 **_Comprehensive_ docs/tutorials**
 are a _gift_ to our future selves and teammates. 🎁 
@@ -39,24 +40,23 @@ If you find them useful, please ⭐ the repo to let us know.
 
 # _What_? 💭
 
-This project is intended as a _barebones_ demonstration
+This project is a _barebones_ demonstration
 of using
 [`gogs`](https://github.com/dwyl/gogs)
-in any **`Phoenix`** Web Application.
+in any **`Phoenix`** App. <br />
 It's intended to be beginner-friendly
-and focus on showcasing _one_ things.
+and focus on showcasing **_one_ thing**.
 
 It can be used as the basis for another app
 or you can borrow chunks of setup/code.
 
 # _Who_? 👥
 
-This demos is intended for people of all Elixir/Phoenix skill levels.
-
-Following all the steps in this example should take around 10 minutes.
-However if you get stuck, please don't suffer in silence!
-Get help by opening an issue:
-[github.com/dwyl/gogs-demo/issues](https://github.com/dwyl/gogs-demo/issues)
+This demo is intended for people of all Elixir/Phoenix skill levels. <br />
+Following all the steps in this example should take around **`10 minutes`**. <br />
+If you get stuck, please _don't suffer_ in silence!
+**Get help** by opening an issue:
+[github.com/dwyl/**gogs-demo/issues**](https://github.com/dwyl/gogs-demo/issues)
 
 <br />
 
@@ -214,15 +214,47 @@ defmodule AppWeb.PageController do
 end
 ```
 
-
-
-Inside the file, create a new function:
+Inside the file, 
+replace the `index/2` function with the following:
 
 ```elixir
+  def index(conn, _params) do
+    org_name = "myorg"
+    repo_name = "public-repo"
+    file_name = "README.md"
+    {:ok, %HTTPoison.Response{ body: response_body}} = 
+      Gogs.remote_read_raw(org_name, repo_name, file_name)
+    render(conn, "index.html", text: response_body)
+  end
+```
+
+### 4.1 Update the Template to Display the Text
+
+Open the file:
+`lib/app_web/templates/page/index.html.heex`
+
+And replace the 2nd `<section>` block with:
+
+```html
 
 ```
 
-Detour: https://github.com/dwyl/gogs/issues/21
+
+If you want to make this raw `markdown` data _look_ good,
+we need to add some `JavaScript` magic:
+
+
+```html
+<div id="content"></div>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+   document.getElementById('content').innerHTML =
+   marked.parse('# Marked in the browser\n\nRendered by **marked**.');
+</script>
+```
+
+![image](https://user-images.githubusercontent.com/194400/167685396-207cc12f-d722-4ca3-8582-f7563597bcff.png)
+
 
 
 <br />
