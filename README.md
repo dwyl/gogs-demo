@@ -140,6 +140,24 @@ You should see the default **`Phoenix`** home page:
 
 So far so good. 👌 <br />
 
+#### 1.a Clear out `page` template
+
+Before we continue, 
+let's do a clear out of the `page` template:
+`lib/app_web/templates/page/index.html.heex`
+
+Open the file and delete the contents so it's completely empty.
+
+With the `Phoenix` server running (`mix phx.server`),
+the page should refresh and now look like this:
+
+![phoenix-app-clean-slate](https://user-images.githubusercontent.com/194400/168068678-60b8eab1-ee7c-49a7-81d8-c8ecc22eb123.png)
+
+With that done,
+let's crack on with the important part!
+
+<br />
+
 ### 2. Add `gogs` to `deps` ⬇️ 
 
 Open the 
@@ -148,7 +166,7 @@ file,
 locate the `defp deps do` section and add the following line:
 
 ```elixir
-{:gogs, "~> 0.6.0"},
+{:gogs, "~> 1.0.0"},
 ```
 
 Once you've saved your `mix.exs` file, 
@@ -218,14 +236,14 @@ Inside the file,
 replace the `index/2` function with the following:
 
 ```elixir
-  def index(conn, _params) do
-    org_name = "myorg"
-    repo_name = "public-repo"
-    file_name = "README.md"
-    {:ok, %HTTPoison.Response{ body: response_body}} = 
-      Gogs.remote_read_raw(org_name, repo_name, file_name)
-    render(conn, "index.html", text: response_body)
-  end
+def index(conn, _params) do
+  org_name = "demo-org"
+  repo_name = "hello-world"
+  file_name = "README.md"
+  {:ok, %HTTPoison.Response{ body: raw_html}} = 
+    Gogs.remote_render_markdown_html(org_name, repo_name, file_name)
+  render(conn, "index.html", html: raw_html)
+end
 ```
 
 ### 4.1 Update the Template to Display the Text
@@ -233,28 +251,15 @@ replace the `index/2` function with the following:
 Open the file:
 `lib/app_web/templates/page/index.html.heex`
 
-And replace the 2nd `<section>` block with:
+Insert the following line:
 
 ```html
-
+<%= raw(@html) %>
 ```
 
+Now you will see the `Markdown` rendered in the template:
 
-If you want to make this raw `markdown` data _look_ good,
-we need to add some `JavaScript` magic:
-
-
-```html
-<div id="content"></div>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script>
-   document.getElementById('content').innerHTML =
-   marked.parse('# Marked in the browser\n\nRendered by **marked**.');
-</script>
-```
-
-![image](https://user-images.githubusercontent.com/194400/167685396-207cc12f-d722-4ca3-8582-f7563597bcff.png)
-
+![rendered-markdown](https://user-images.githubusercontent.com/194400/168069048-15dd5b50-235c-4cbe-9f3e-fb306933e17c.png)
 
 
 <br />

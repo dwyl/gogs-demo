@@ -1,15 +1,1 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>Peace of mind from prototype to production</p>
-</section>
-
-
-<p id="raw"><%= @text %></p>
-<hr />
-Rendered Markdown:
-<div id="content"></div>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script>
-   raw = document.getElementById('raw').innerHTML
-   document.getElementById('content').innerHTML = marked.parse(raw);
-</script>
+<%= raw(@html) %>
