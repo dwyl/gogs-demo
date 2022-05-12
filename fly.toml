@@ -26,3 +26,8 @@ kill_timeout = 5
     interval = "15s"
     restart_limit = 6
     timeout = "2s"
+
+[env]
+  LOG_LEVEL = "debug"
+  GOGS_URL = "gogs-server.fly.dev"
+  GOGS_SSH_PORT = 10022

@@ -1,75 +1,97 @@
-###
-### Fist Stage - Building the Release
-###
-FROM hexpm/elixir:1.12.1-erlang-24.0.1-alpine-3.13.3 AS build
+# Find eligible builder and runner images on Docker Hub. We use Ubuntu/Debian instead of
+# Alpine to avoid DNS resolution issues in production.
+#
+# https://hub.docker.com/r/hexpm/elixir/tags?page=1&name=ubuntu
+# https://hub.docker.com/_/ubuntu?tab=tags
+#
+#
+# This file is based on these images:
+#
+#   - https://hub.docker.com/r/hexpm/elixir/tags - for the build image
+#   - https://hub.docker.com/_/debian?tab=tags&page=1&name=bullseye-20210902-slim - for the release image
+#   - https://pkgs.org/ - resource for finding needed packages
+#   - Ex: hexpm/elixir:1.13.3-erlang-24.3.1-debian-bullseye-20210902-slim
+#
+ARG ELIXIR_VERSION=1.13.3
+ARG OTP_VERSION=24.3.1
+ARG DEBIAN_VERSION=bullseye-20210902-slim
+
+ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
+ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
+
+FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies
-RUN apk add --no-cache build-base npm
+RUN apt-get update -y && apt-get install -y build-essential git nodejs npm \
+    && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # prepare build dir
 WORKDIR /app
-
-# extend hex timeout
-ENV HEX_HTTP_TIMEOUT=20
 
 # install hex + rebar
 RUN mix local.hex --force && \
     mix local.rebar --force
 
-# set build ENV as prod
-ENV MIX_ENV=prod
-ENV SECRET_KEY_BASE=nokey
+# set build ENV
+ENV MIX_ENV="prod"
 
-# Copy over the mix.exs and mix.lock files to load the dependencies. If those
-# files don't change, then we don't keep re-fetching and rebuilding the deps.
+# install mix dependencies
 COPY mix.exs mix.lock ./
-COPY config config
+RUN mix deps.get --only $MIX_ENV
+RUN mkdir config
 
-RUN mix deps.get --only prod && \
-    mix deps.compile
-
-# install npm dependencies
-# COPY assets/package.json assets/package-lock.json ./assets/
-# RUN npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
+# copy compile-time config files before we compile dependencies
+# to ensure any relevant config change will trigger the dependencies
+# to be re-compiled.
+COPY config/config.exs config/${MIX_ENV}.exs config/
+RUN mix deps.compile
 
 COPY priv priv
-COPY assets assets
 
-# NOTE: If using TailwindCSS, it uses a special "purge" step and that requires
-# the code in `lib` to see what is being used. Uncomment that here before
-# running the npm deploy script if that's the case.
-# COPY lib lib
-
-# build assets
-# RUN npm run --prefix ./assets deploy
-RUN mix assets.deploy
-RUN mix phx.digest
-
-# copy source here if not using TailwindCSS
 COPY lib lib
 
-# compile and build release
-RUN mix do compile, release
+COPY assets assets
 
-###
-### Second Stage - Setup the Runtime Environment
-###
+RUN npm install elm --global
 
-# prepare release docker image
-FROM alpine:3.13.3 AS app
-RUN apk add --no-cache libstdc++ openssl ncurses-libs
+# compile assets
+RUN mix assets.deploy
 
-WORKDIR /app
+# Compile the release
+RUN mix compile
 
-RUN chown nobody:nobody /app
+# Changes to config/runtime.exs don't require recompiling the code
+COPY config/runtime.exs config/
 
-USER nobody:nobody
+COPY rel rel
+RUN mix release
 
-COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/hits ./
+# start a new build stage so that the final image will only contain
+# the compiled release and other runtime necessities
+FROM ${RUNNER_IMAGE}
 
-ENV HOME=/app
-ENV MIX_ENV=prod
-ENV SECRET_KEY_BASE=nokey
-ENV PORT=4000
+RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 locales \
+  && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
-CMD ["bin/app", "start"]
+# Set the locale
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+WORKDIR "/app"
+RUN chown nobody /app
+
+# set runner ENV
+ENV MIX_ENV="prod"
+
+# Only copy the final release from the build stage
+COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/app ./
+
+USER nobody
+
+CMD ["/app/bin/server"]
+# Appended by flyctl
+ENV ECTO_IPV6 true
+ENV ERL_AFLAGS "-proto_dist inet6_tcp"

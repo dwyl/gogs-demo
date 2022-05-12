@@ -341,12 +341,6 @@ you can either chose
 
 ## 6. _Deploy_ to Fly.io 🚀 
 
-> Need to document how to deploy the Phoenix App to Fly.io
-> Will return to this tomorrow. `#EnoughScreens` for today.
-
-### Create new Org on Fly.io (Optional)
-
-https://fly.io/organizations
 
 
 
