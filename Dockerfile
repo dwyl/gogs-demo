@@ -49,7 +49,6 @@ RUN mix phx.digest
 COPY lib lib
 
 # compile and build release
-COPY rel rel
 RUN mix do compile, release
 
 ###
@@ -73,4 +72,4 @@ ENV MIX_ENV=prod
 ENV SECRET_KEY_BASE=nokey
 ENV PORT=4000
 
-CMD ["bin/hits", "start"]
+CMD ["bin/app", "start"]
