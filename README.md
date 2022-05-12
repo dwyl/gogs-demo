@@ -246,7 +246,7 @@ def index(conn, _params) do
 end
 ```
 
-### 4.1 Update the Template to Display the Text
+### 5. Update the Template to Display the Text
 
 Open the file:
 `lib/app_web/templates/page/index.html.heex`
@@ -260,6 +260,7 @@ Insert the following line:
 Now you will see the `Markdown` rendered in the template:
 
 ![rendered-markdown](https://user-images.githubusercontent.com/194400/168069048-15dd5b50-235c-4cbe-9f3e-fb306933e17c.png)
+
 
 
 <br />
