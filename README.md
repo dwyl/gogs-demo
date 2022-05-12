@@ -140,7 +140,7 @@ You should see the default **`Phoenix`** home page:
 
 So far so good. 👌 <br />
 
-#### 1.a Clear out `page` template
+#### 1.1 Clear out `page` template
 
 Before we continue, 
 let's do a clear out of the `page` template:
@@ -153,8 +153,58 @@ the page should refresh and now look like this:
 
 ![phoenix-app-clean-slate](https://user-images.githubusercontent.com/194400/168068678-60b8eab1-ee7c-49a7-81d8-c8ecc22eb123.png)
 
-With that done,
-let's crack on with the important part!
+#### 1.2 Fix the Failing Test
+
+If you run the tests after the previous step:
+
+```sh
+mix test
+```
+
+You will see output similar to the following:
+
+```sh
+1) test GET / (AppWeb.PageControllerTest)
+    test/app_web/controllers/page_controller_test.exs:4
+    Assertion with =~ failed
+    code:  assert html_response(conn, 200) =~ "Welcome to Phoenix!"
+    left:  "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n \n<meta content=\"Am45cWxzFjAKCBcxXQAYHRUmaQZ5RjUFoYS35KUzdLCk3YBN-IQU8rs3\" name=\"csrf-token\">\n<title data-suffix=\" · Phoenix Framework\">App · Phoenix Framework</title> etc."
+    right: "Welcome to Phoenix!"
+    stacktrace:
+      test/app_web/controllers/page_controller_test.exs:6: (test)
+
+Finished in 0.1 seconds (0.08s async, 0.07s sync)
+3 tests, 1 failure
+```
+
+This is because we removed the block of text that the test expects to be on the page.
+Easy enough to fix by updating the assertion in the test.
+
+Open the `test/app_web/controllers/page_controller_test.exs` file
+and replace the line:
+
+```elixir
+assert html_response(conn, 200) =~ "Welcome to Phoenix!"
+```
+
+With the following:
+
+```elixir
+assert html_response(conn, 200) =~ "Get Started"
+```
+
+Once you save the file and re-run the tests `mix test`,
+they should pass:
+
+```sh
+...
+
+Finished in 0.1 seconds (0.08s async, 0.06s sync)
+3 tests, 0 failures
+```
+
+With that out-of-the way,
+let's crack on with the actual demo!
 
 <br />
 
@@ -170,16 +220,23 @@ locate the `defp deps do` section and add the following line:
 ```
 
 Once you've saved your `mix.exs` file, 
+e.g:
+[`mix.exs#L55-L56`](https://github.com/dwyl/gogs-demo/blob/58c6bf0f7b96a370f6a90408526f6e335014025a/mix.exs#L55-L56) <br />
 run: 
 ```sh
 mix deps.get
 ```
 
+With the dependency installed, 
+we can now setup.
+
 ### 3. Setup: Environment Variables 📝
 
 To get the **`gogs`** package working in your **`Phoenix`** App,
-you will need 4 environment variables:
+you will need **4 environment variables**.
+See:
 [**`.env_sample`**](https://github.com/dwyl/gogs/blob/main/.env_sample)
+for a sample.
 
 1. `GOGS_URL` - the domain where your Gogs Server is deployed,
    without the protocol, <br />
@@ -189,15 +246,16 @@ you will need 4 environment variables:
 See: 
 [gogs-server#connect-via-rest-api-https](https://github.com/dwyl/gogs-server#connect-via-rest-api-https)
 
-3. `GOGS_SSH_PRIVATE_KEY_PATH` - absolute path to the `id_rsa` file
-  on your `localhost` or `Phoenix` server instance.
-
-4. `GOGS_SSH_PORT` - The TCP port allocated to SSH on your Gogs Server,
+3. `GOGS_SSH_PORT` - The TCP port allocated to SSH on your Gogs Server,
    in our case it's: `10022`.
+
+4. `GOGS_SSH_PRIVATE_KEY_PATH` - absolute path to the `id_rsa` file
+  on your `localhost` or `Phoenix` server instance.
 
 > If you're new to Environment Variables
 > Please see: 
 > [github.com/dwyl/**learn-environment-variables**](https://github.com/dwyl/learn-environment-variables)
+
 
 #### Context: `Gogs` Server on Fly.io
 
@@ -209,7 +267,12 @@ To understand how this was deployed,
 please see: 
 [github.com/dwyl/**gogs-server**](https://github.com/dwyl/gogs-server)
 
+
 <br />
+
+#### _Test_ Your Setup!
+
+
 
 ### 4. Create Function to Interact with Gogs Repo
 
@@ -240,7 +303,7 @@ def index(conn, _params) do
   org_name = "demo-org"
   repo_name = "hello-world"
   file_name = "README.md"
-  {:ok, %HTTPoison.Response{ body: raw_html}} = 
+  {:ok, %{body: raw_html}} = 
     Gogs.remote_render_markdown_html(org_name, repo_name, file_name)
   render(conn, "index.html", html: raw_html)
 end
@@ -261,9 +324,36 @@ Now you will see the `Markdown` rendered in the template:
 
 ![rendered-markdown](https://user-images.githubusercontent.com/194400/168069048-15dd5b50-235c-4cbe-9f3e-fb306933e17c.png)
 
+#### Recap!
+
+At this point we have demonstrated 
+rendering a Markdown (`README.md`)
+file hosted on a `Gogs` server
+in a `Phoenix` app using the `gogs` package.
+This is already cool,
+but it doesn't even scratch the surface of what's possible!
+
+At this point in the journey, 
+you can either chose 
 
 
 <br />
+
+## 6. _Deploy_ to Fly.io 🚀 
+
+> Need to document how to deploy the Phoenix App to Fly.io
+> Will return to this tomorrow. `#EnoughScreens` for today.
+
+### Create new Org on Fly.io (Optional)
+
+https://fly.io/organizations
+
+
+
+
+<br /><br /><br />
+
+<!-- 
 
 # _Bonus Level_: _Optional_ UI/UX! 💃 
 
@@ -317,11 +407,5 @@ This Rich Text Editor is based off our work in:
 ## Checkpoint: Working on `localhost` 🏁 
 
 
-## X. _Deploy_ to Fly.io 🚀 
+-->
 
-> Need to document how to deploy the Phoenix App to Fly.io
-> Will return to this tomorrow. `#EnoughScreens` for today.
-
-### Create new Org on Fly.io (Optional)
-
-https://fly.io/organizations
