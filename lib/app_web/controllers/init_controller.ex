@@ -1,10 +1,14 @@
 defmodule AppWeb.InitController do
   use AppWeb, :controller
+  require Logger
 
   @env_required ~w/GOGS_URL GOGS_SSH_PORT GOGS_ACCESS_TOKEN SECRET_KEY_BASE FLY_APP_NAME/
   @env_optional ~w/GIT_TEMP_DIR_PATH/
 
   def index(conn, _params) do
+
+    Envar.get("GOGS_URL") |> Logger.debug
+    Gogs.api_base_url() |> Logger.debug
 
     init = if Envar.is_set_all?(@env_required) do
       "all env vars are defined"
