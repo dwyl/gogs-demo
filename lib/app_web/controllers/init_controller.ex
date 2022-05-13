@@ -5,12 +5,12 @@ defmodule AppWeb.InitController do
 
   @env_required ~w/GOGS_URL GOGS_SSH_PORT GOGS_ACCESS_TOKEN SECRET_KEY_BASE FLY_APP_NAME/
   @env_optional ~w/GIT_TEMP_DIR_PATH/
-  @base_url GogsHelpers.api_base_url()
+  @base_url Gogs.Helpers.api_base_url()
 
   def index(conn, _params) do
 
     Envar.get("GOGS_URL") |> Logger.debug
-    GogsHelpers.api_base_url() |> Logger.debug
+    Gogs.Helpers.api_base_url() |> Logger.debug
     Logger.debug("Check compile time var: #{@base_url}")
 
     init = if Envar.is_set_all?(@env_required) do
