@@ -342,7 +342,10 @@ you can either chose
 
 ## 6. _Deploy_ to Fly.io 🚀 
 
-
+The `Dockerfile`, `fly.toml` and `config/runtime.exs` files
+can be used to deploy to Fly.io: 
+https://gogs-demo.fly.dev
+![image](https://user-images.githubusercontent.com/194400/168398126-05c147ef-7fcc-4867-8a05-c89669027674.png)
 
 
 
