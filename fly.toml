@@ -39,5 +39,5 @@ kill_timeout = 5
   PHX_HOST = "gogs-demo.fly.dev"
   PORT = "4000"
   LOG_LEVEL = "debug"
-  GOGS_URL = "gogs-server.fly.dev"
-  GOGS_SSH_PORT = 10022
+  GOGS_URL=gogs-server.fly.dev
+  GOGS_SSH_PORT=10022
