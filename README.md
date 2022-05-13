@@ -216,7 +216,7 @@ file,
 locate the `defp deps do` section and add the following line:
 
 ```elixir
-{:gogs, "~> 1.0.0"},
+{:gogs, "~> 1.0.1"},
 ```
 
 Once you've saved your `mix.exs` file, 
@@ -270,8 +270,9 @@ please see:
 
 <br />
 
+<!--
 #### _Test_ Your Setup!
-
+-->
 
 
 ### 4. Create Function to Interact with Gogs Repo
