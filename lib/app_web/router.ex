@@ -17,6 +17,7 @@ defmodule AppWeb.Router do
   scope "/", AppWeb do
     pipe_through :browser
 
+    get "/init", InitController, :index
     get "/", PageController, :index
   end
 
