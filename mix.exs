@@ -56,7 +56,7 @@ defmodule App.MixProject do
       {:gogs, "~> 1.1.0"},
 
       # Check test coverage: github.com/parroty/excoveralls
-      {:excoveralls, "~> 0.14.4", only: :test, runtime: false},
+      {:excoveralls, "~> 0.15.0", only: :test, runtime: false},
 
       # Keep Code Tidy: https://github.com/rrrene/credo
       {:credo, "~> 1.6.4", only: [:dev, :test], runtime: false},
