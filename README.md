@@ -11,10 +11,9 @@ using the
 [`gogs`](https://github.com/dwyl/gogs) package. <br />
 **_Step-by-step_ tutorial** showing you how to do it yourself!
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/gogs-demo/Elixir%20CI?label=build&style=flat-square)](https://github.com/dwyl/gogs-demo/actions/workflows/ci.yml)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/gogs-demo/ci.yml?label=build&style=flat-square&branch=main)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/gogs-demo/main.svg?style=flat-square)](https://codecov.io/github/dwyl/gogs-demo?branch=main)
 [![Hex.pm](https://img.shields.io/hexpm/v/gogs?color=brightgreen&style=flat-square)](https://hex.pm/packages/gogs)
-[![Libraries.io dependency status](https://img.shields.io/librariesio/release/hex/gogs?logoColor=brightgreen&style=flat-square)](https://libraries.io/hex/gogs)
 [![docs](https://img.shields.io/badge/docs-maintained-brightgreen?style=flat-square)](https://hexdocs.pm/gogs/api-reference.html)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/gogs-demo/issues)
 [![HitCount](https://hits.dwyl.com/dwyl/gogs-demo.svg)](https://hits.dwyl.com/dwyl/gogs-demo)
