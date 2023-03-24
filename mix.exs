@@ -60,7 +60,7 @@ defmodule App.MixProject do
       {:excoveralls, "~> 0.16.0", only: :test, runtime: false},
 
       # Keep Code Tidy: https://github.com/rrrene/credo
-      {:credo, "~> 1.6.4", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.7.0", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
     ]
   end
